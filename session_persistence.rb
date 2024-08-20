@@ -27,6 +27,12 @@ class SessionPersistence
     list[:name] = new_name
   end
 
+  def create_new_todo(list_id, todo_name)
+    list = find_list(list_id)
+    todo_id = next_element_id(list[:todos])
+    list[:todos] << { id: todo_id, name: todo_name, completed: false }
+  end
+
   private 
 
   def next_element_id(elements)

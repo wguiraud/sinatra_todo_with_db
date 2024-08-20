@@ -159,8 +159,7 @@ post "/lists/:list_id/todos" do
     session[:error] = error
     erb :list, layout: :layout
   else
-    id = next_element_id(@list[:todos])
-    @list[:todos] << { id: id, name: text, completed: false }
+    @storage.create_new_todo(@list_id, text)
 
     session[:success] = "The todo was added."
     redirect "/lists/#{@list_id}"
