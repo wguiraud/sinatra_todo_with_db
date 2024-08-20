@@ -33,6 +33,11 @@ class SessionPersistence
     list[:todos] << { id: todo_id, name: todo_name, completed: false }
   end
 
+  def delete_todo_from_list(list_id, todo_id)
+    list = find_list(list_id)
+    list[:todos] .reject! { |todo| todo[:id] == todo_id }
+  end
+
   private 
 
   def next_element_id(elements)

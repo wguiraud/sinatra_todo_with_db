@@ -172,7 +172,9 @@ post "/lists/:list_id/todos/:id/destroy" do
   @list = load_list(@list_id)
 
   todo_id = params[:id].to_i
-  @list[:todos].reject! { |todo| todo[:id] == todo_id }
+  #@list[:todos].reject! { |todo| todo[:id] == todo_id }
+  @storage.delete_todo_from_list(@list_id, todo_id)
+
   if env["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest"
     status 204
   else
