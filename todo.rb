@@ -2,12 +2,17 @@ require "sinatra"
 require "sinatra/reloader"
 require "sinatra/content_for"
 require "tilt/erubis"
+
 require_relative "session_persistence"
 
 configure do
   enable :sessions
   set :session_secret, SecureRandom.hex(32) 
   set :erb, :escape_html => true
+end
+
+before do
+  @storage = SessionPersistence.new(session)
 end
 
 helpers do
@@ -48,14 +53,13 @@ def load_list(id)
 
   session[:error] = "The specified list was not found."
   redirect "/lists"
-  halt
 end
 
 # Return an error message if the name is invalid. Return nil if name is valid.
 def error_for_list_name(name)
   if !(1..100).cover? name.size
     "List name must be between 1 and 100 characters."
-  elsif session[:lists].any? { |list| list[:name] == name }
+  elsif @storage.list_name_already_taken?(name)
     "List name must be unique."
   end
 end
@@ -70,10 +74,6 @@ end
 def next_element_id(elements)
   max = elements.map { |todo| todo[:id] }.max || 0
   max + 1
-end
-
-before do
-  @storage = SessionPersistence.new(session)
 end
 
 get "/" do
