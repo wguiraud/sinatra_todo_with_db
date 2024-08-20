@@ -13,4 +13,9 @@ class SessionPersistence
     @session[:lists]
   end
 
+  def create_new_list(list_name)
+    id = next_element_id(@session[:lists])
+    @session[:lists] << { id: id, name: list_name, todos: [] }
+  end
+
 end

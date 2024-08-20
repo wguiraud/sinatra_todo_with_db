@@ -103,11 +103,7 @@ post "/lists" do
     session[:error] = error
     erb :new_list, layout: :layout
   else
-#    id = next_element_id(session[:lists])
-#    session[:lists] << { id: id, name: list_name, todos: [] }
-    id = next_element_id(session[:lists])
-    binding.pry
-    session[:lists] << { id: id, name: list_name, todos: [] }
+    @storage.create_new_list(list_name)
     session[:success] = "The list has been created."
     redirect "/lists"
   end
