@@ -73,18 +73,12 @@ def error_for_todo(name)
   end
 end
 
-def next_element_id(elements)
-  max = elements.map { |todo| todo[:id] }.max || 0
-  max + 1
-end
-
 get "/" do
   redirect "/lists"
 end
 
 # View list of lists
 get "/lists" do
-  #@lists = session[:lists]
   @lists = @storage.all_list 
   erb :lists, layout: :layout
 end
