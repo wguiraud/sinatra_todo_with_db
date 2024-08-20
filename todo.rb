@@ -2,6 +2,7 @@ require "sinatra"
 require "sinatra/reloader"
 require "sinatra/content_for"
 require "tilt/erubis"
+require_relative "session_persistence"
 
 configure do
   enable :sessions
@@ -42,7 +43,7 @@ helpers do
 end
 
 def load_list(id)
-  list = session[:lists].find{ |list| list[:id] == id }
+  @storage.find_list(id)
   return list if list
 
   session[:error] = "The specified list was not found."
@@ -72,7 +73,7 @@ def next_element_id(elements)
 end
 
 before do
-  session[:lists] ||= []
+  @storage = SessionPersistence.new(session)
 end
 
 get "/" do
