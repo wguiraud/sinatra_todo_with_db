@@ -50,7 +50,7 @@ helpers do
 end
 
 def load_list(id)
-  @storage.find_list(id)
+  list = @storage.find_list(id) 
   return list if list
 
   session[:error] = "The specified list was not found."
@@ -143,7 +143,9 @@ end
 # Delete a todo list
 post "/lists/:id/destroy" do
   id = params[:id].to_i
-  session[:lists].reject! { |list| list[:id] == id }
+
+  @storage.delete_list(id)
+
   session[:success] = "The list has been deleted."
   if env["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest"
     "/lists"

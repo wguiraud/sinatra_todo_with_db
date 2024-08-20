@@ -18,4 +18,8 @@ class SessionPersistence
     @session[:lists] << { id: id, name: list_name, todos: [] }
   end
 
+  def delete_list(id)
+    @session[:lists].reject! { |list| list[:id] == id }
+  end
+
 end
