@@ -7,3 +7,5 @@ gem "webrick"
 
 ruby "3.2.2"
 gem "pg", "~> 1.5"
+
+gem "pry", "~> 0.14.2"

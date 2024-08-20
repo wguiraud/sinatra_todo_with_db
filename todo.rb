@@ -2,6 +2,8 @@ require "sinatra"
 require "sinatra/reloader"
 require "sinatra/content_for"
 require "tilt/erubis"
+require "pry"
+
 
 require_relative "session_persistence"
 
@@ -82,7 +84,8 @@ end
 
 # View list of lists
 get "/lists" do
-  @lists = session[:lists]
+  #@lists = session[:lists]
+  @lists = @storage.all_list 
   erb :lists, layout: :layout
 end
 
@@ -100,7 +103,10 @@ post "/lists" do
     session[:error] = error
     erb :new_list, layout: :layout
   else
+#    id = next_element_id(session[:lists])
+#    session[:lists] << { id: id, name: list_name, todos: [] }
     id = next_element_id(session[:lists])
+    binding.pry
     session[:lists] << { id: id, name: list_name, todos: [] }
     session[:success] = "The list has been created."
     redirect "/lists"
