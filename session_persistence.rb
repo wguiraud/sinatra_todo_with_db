@@ -38,6 +38,12 @@ class SessionPersistence
     list[:todos] .reject! { |todo| todo[:id] == todo_id }
   end
 
+  def set_todo_as_completed(list_id, todo_id, new_status)
+    list = find_list(list_id)
+    todo = list[:todos].find { |todo| todo[:id] == todo_id }
+    todo[:completed] = new_status 
+  end
+
   private 
 
   def next_element_id(elements)

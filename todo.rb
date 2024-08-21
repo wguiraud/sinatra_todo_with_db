@@ -190,8 +190,7 @@ post "/lists/:list_id/todos/:id" do
 
   todo_id = params[:id].to_i
   is_completed = params[:completed] == "true"
-  todo = @list[:todos].find { |todo| todo[:id] == todo_id }
-  todo[:completed] = is_completed
+  @storage.set_todo_as_completed(@list_id, todo_id, is_completed)
 
   session[:success] = "The todo has been updated."
   redirect "/lists/#{@list_id}"
