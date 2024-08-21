@@ -44,6 +44,11 @@ class SessionPersistence
     todo[:completed] = new_status 
   end
 
+  def mark_all_todos_as_completed(list_id)
+    list = find_list(list_id)
+    list[:todos].each { |todo| todo[:completed] = true }
+  end
+
   private 
 
   def next_element_id(elements)
