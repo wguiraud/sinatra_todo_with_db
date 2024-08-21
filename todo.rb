@@ -5,7 +5,7 @@ require "tilt/erubis"
 require "pry"
 
 
-require_relative "session_persistence"
+require_relative "lib/database_persistence"
 
 configure do
   enable :sessions
@@ -14,7 +14,7 @@ configure do
 end
 
 before do
-  @storage = SessionPersistence.new(session)
+  @storage = DatabasePersistence.new
 end
 
 helpers do
