@@ -6,30 +6,60 @@ class DatabasePersistence
     @db = PG.connect(dbname: "todos")
   end
 
+  def query(sql_statement, *parameters)
+    puts "#{sql_statement}: #{parameters}"
+    @db.exec_params(sql_statement, parameters)
+  end
+
   def find_list(id)
-#    @session[:lists].find { |list| list[:id] == id }
+    sql = <<~SQL
+    SELECT * FROM lists 
+    WHERE id = $1; 
+    SQL
+    result = query(sql, id)
+
+    tuple = result.first
+    { id: tuple["id"], name: tuple["name"], todos: [] }
   end
 
   def all_list
     sql = <<~SQL 
     SELECT * FROM lists; 
     SQL
-    result = @db.exec(sql)
-    result.map do |row|
-      { id: row["id"], name: row["name"], todos: [] }
+    result = query(sql)
+
+    result.map do |tuple|
+      { id: tuple["id"], name: tuple["name"], todos: [] }
     end
   end
 
   def create_new_list(list_name)
+    sql = <<~SQL
+    INSERT INTO lists (name)
+    VALUES
+    ("#{list_name}");
+    SQL
+    result = @db.exec(sql)
 #    id = next_element_id(@session[:lists])
 #    @session[:lists] << { id: id, name: list_name, todos: [] }
   end
 
   def delete_list(id)
+    sql = <<~SQL
+    DELETE FROM lists
+    WHERE id = #{id};
+    SQL
+    result = @db.exec(sql)
 #    @session[:lists].reject! { |list| list[:id] == id }
   end
 
   def update_list_name(id, new_name)
+    sql = <<~SQL
+    UPDATE lists 
+    WHERE id = #{id} 
+    SET name = #{new_name};
+    SQL
+    result = @db.exec(sql)
 #    list = find_list(id)
 #    list[:name] = new_name
   end
