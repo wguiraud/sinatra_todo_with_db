@@ -61,7 +61,7 @@ end
 def error_for_list_name(name)
   if !(1..100).cover? name.size
     "List name must be between 1 and 100 characters."
-  elsif @storage.all_list.any? { |list| list[:name] == name } 
+  elsif @storage.all_lists.any? { |list| list[:name] == name } 
     "List name must be unique."
   end
 end
@@ -79,7 +79,7 @@ end
 
 # View list of lists
 get "/lists" do
-  @lists = @storage.all_list 
+  @lists = @storage.all_lists 
   erb :lists, layout: :layout
 end
 
