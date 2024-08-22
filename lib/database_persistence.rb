@@ -2,12 +2,13 @@ require "pg"
 
 class DatabasePersistence 
 
-  def initialize
+  def initialize(logger)
     @db = PG.connect(dbname: "todos")
+    @logger = logger
   end
 
   def query(sql_statement, *parameters)
-    puts "#{sql_statement}: #{parameters}"
+    @logger.info("#{sql_statement}: #{parameters}")
     @db.exec_params(sql_statement, parameters)
   end
 
