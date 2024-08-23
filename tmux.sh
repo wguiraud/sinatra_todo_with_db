@@ -29,3 +29,13 @@ tmux send-keys -t $SESSION_NAME_2:0.0 'bash' C-m
 
 # Attach to the tmux session
 tmux attach-session -t $SESSION_NAME_2
+
+
+# Create a new tmux session
+tmux new-session -d -s $SESSION_NAME_3
+
+# Run bash the first pane
+tmux send-keys -t $SESSION_NAME_3:0.0 'bash' C-m
+
+# Attach to the tmux session
+tmux attach-session -t $SESSION_NAME_3

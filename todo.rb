@@ -146,6 +146,7 @@ post "/lists/:id/destroy" do
   @storage.delete_list(id)
 
   session[:success] = "The list has been deleted."
+
   if env["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest"
     "/lists"
   else
