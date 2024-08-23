@@ -1,8 +1,6 @@
 require "sinatra"
-require "sinatra/reloader"
 require "sinatra/content_for"
 require "tilt/erubis"
-require "pry"
 
 
 require_relative "lib/database_persistence"
@@ -12,6 +10,13 @@ configure do
   set :session_secret, SecureRandom.hex(32) 
   set :erb, :escape_html => true
 end
+
+configure(:development) do 
+  require "sinatra/reloader"
+  require "pry"
+  also_reload "lib/database_persistence.rb"
+end
+
 
 before do
   @storage = DatabasePersistence.new(logger)
